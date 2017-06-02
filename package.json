@@ -1,5 +1,5 @@
 {
-  "name": "listener-create-fragment-from-blueprint",
+  "name": "create-fragment-from-blueprint",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",

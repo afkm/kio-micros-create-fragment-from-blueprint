@@ -35,11 +35,11 @@ var listener = require('seneca')()
 
                 var startNodeCuid = null;
 
-                console.log("result set length: " + result.records.length);
+                // console.log("result set length: " + result.records.length);
 
                 async.eachSeries(result.records, function(record, callback) {
 
-                        console.log(`stepping into startNode ${record.get('startNode').properties.cuid} (${record.get('startNode').labels[0]}) -[${record.get('relation').properties[0]}]- childNode ${record.get('childNode').properties.cuid} (${record.get('childNode').labels[0]})`);
+                        // console.log(`stepping into startNode ${record.get('startNode').properties.cuid} (${record.get('startNode').labels[0]}) -[${record.get('relation').properties[0]}]- childNode ${record.get('childNode').properties.cuid} (${record.get('childNode').labels[0]})`);
 
                         if (startNodeCuid == null) {
                             if (message.isStartNode) {
@@ -71,7 +71,7 @@ var listener = require('seneca')()
                             var newChildNodeCuid = cuid();
                             addNode(newChildNodeCuid, record.get('childNode').labels[0], childTitle, startNodeCuid);
 
-                            console.log("Traversing " + record.get('childNode').properties.cuid);
+                            // console.log("Traversing " + record.get('childNode').properties.cuid);
 
                             var msg = "cmd:createFragment,fromBlueprint:" + record.get('childNode').properties.cuid + ",asChildOf:" + newChildNodeCuid + ",title:'',isStartNode:false";
                             listener.act(msg, (err, result) => {
@@ -111,12 +111,12 @@ function addNode(cuid, type, title, linkTo) {
     var queryString = "MERGE (" + cuid + ":" + type + " { cuid:'" + cuid + "', title:'" + title + "' })\n";
     queryString += "WITH 1 as dummy\n";
     queryString += "MATCH (a { cuid: '" + cuid + "' }), (b { cuid: '" + linkTo + "'}) MERGE (a)<-[:USES]-(b)\n";
-    console.log("addNode: " + queryString);
+    // console.log("addNode: " + queryString);
     session
         .run(queryString)
         .then(function(result) {
             session.close();
-            console.log("Successfully added Node " + cuid);
+            // console.log("Successfully added Node " + cuid);
         })
         .catch(function(error) {
             console.log(error);
@@ -129,7 +129,7 @@ function linkNode(cuid, linkTo, linkType) {
         .run(queryString)
         .then(function(result) {
             session.close();
-            console.log("Successfully linked Node " + cuid + " to Node " + linkTo);
+            // console.log("Successfully linked Node " + cuid + " to Node " + linkTo);
         })
         .catch(function(error) {
             console.log(error);
